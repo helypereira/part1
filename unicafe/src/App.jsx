@@ -13,25 +13,48 @@ const Title = ({ title }) => {
   );
 };
 
+
+const StatisticLine = (props) => {
+  //equal value and equal type
+  if(props.text === "Percentage"){
+    return (
+      <tr>
+        <td>{props.text}</td>
+        <td>{props.value}%</td>
+      </tr> 
+    )
+  }
+
+  return (
+      <tr>
+        <td>{props.text}</td>
+        <td>{props.value}</td>
+      </tr> 
+  )
+}
+
 const Statistics = ({ good, neutral, bad, total, average, positivePercentage }) => {
 
-  if(good === 0 & neutral === 0 & bad=== 0 ){
+  if(good === 0 && neutral === 0 && bad=== 0 ){
     return <p>No feedback given</p>
   }
   return (
     <div>
       <Title title="Statistics" />
-      <ul>
-        <li>Good: {good}</li>
-        <li>Neutral: {neutral}</li>
-        <li>Bad: {bad}</li>
-        <li>All: {total}</li>
-        <li>Average: {average.toFixed(2)}</li>
-        <li>Percentage: {positivePercentage.toFixed(2)}%</li>
-      </ul>
+      <table>
+        <tbody>
+          <StatisticLine text="Good" value={good} /> 
+          <StatisticLine text="Neutral" value={neutral} />
+          <StatisticLine text="bad" value={bad} />
+          <StatisticLine text="All" value={total} />
+          <StatisticLine text="Average" value={average} />
+          <StatisticLine text="Percentage" value={positivePercentage}/>
+        </tbody>
+      </table>
     </div>
   );
 };
+
 
 const App = () => {
   // guarda los clics de cada botón en su propio estado

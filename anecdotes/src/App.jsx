@@ -1,7 +1,5 @@
 import { useState } from 'react'
 
-
-
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -15,20 +13,28 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
-
-
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
+  //console.log(`initial votes: ${points}`)
   //console.log(anecdotes[randomAnedoctes]);
   
   const handleRandomAnecdote = () => {
     const randomAnedoctes = Math.floor(Math.random() * anecdotes.length);
     setSelected(randomAnedoctes)
-    console.log(anecdotes[randomAnedoctes])
+    // console.log(anecdotes[randomAnedoctes])
   }
 
+  const handleVote = () => {
+    const copy = [...points];
+    copy[selected] += 1; // Incrementa en uno el valor de la anécdota seleccionada
+    setPoints(copy);
+    console.log(points)
+  }
 
   return (
     <div>
       <p>{anecdotes[selected]}</p>
+      <p>has {points[selected]} votes</p>
+      <button onClick={handleVote}>Vote</button>
       <button onClick={handleRandomAnecdote} >Next anecdote</button>
     </div>
   )
@@ -38,4 +44,4 @@ export default App
 
 
 //https://fullstackopen.com/es/part1/un_estado_mas_complejo_depurando_aplicaciones_react#ejercicios-1-6-1-14
-//1.12*: anecdotes, paso 1
+//1.13*: anecdotes, step 2

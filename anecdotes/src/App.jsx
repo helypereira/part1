@@ -1,4 +1,33 @@
+//https://fullstackopen.com/es/part1/un_estado_mas_complejo_depurando_aplicaciones_react#ejercicios-1-6-1-14
+//1.14*: anecdotes, step 3
+
+/* eslint-disable react/prop-types */
+
 import { useState } from 'react'
+
+const Title = (props) => {
+  return(
+    <h2>{props.text}</h2>
+  )
+}
+
+const Button = ({action, text}) => {
+  return (
+    <button style={{margin: 3, padding: 5}} onClick={action}>{text} </button>
+  )
+}
+
+const Anecdote = (props) => {
+  return (
+      <p>{props.anecdote}</p>
+  )
+}
+
+const Votes = (props) => {
+  return (
+      <p style={{color: props.color}}>Has {props.points} votes.</p>
+  )
+}
 
 const App = () => {
   const anecdotes = [
@@ -14,10 +43,10 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
-  //console.log(`initial votes: ${points}`)
-  //console.log(anecdotes[randomAnedoctes]);
+  // console.log(`initial votes: ${points}`)
+  // console.log(anecdotes[randomAnedoctes]);
   
-  const handleRandomAnecdote = () => {
+  const selectRandomAnecdote = () => {
     const randomAnedoctes = Math.floor(Math.random() * anecdotes.length);
     setSelected(randomAnedoctes)
     // console.log(anecdotes[randomAnedoctes])
@@ -25,23 +54,38 @@ const App = () => {
 
   const handleVote = () => {
     const copy = [...points];
-    copy[selected] += 1; // Incrementa en uno el valor de la anécdota seleccionada
+    copy[selected] += 1; // increase by one the value of selected anecdote 
     setPoints(copy);
-    console.log(points)
+    console.log(copy)
+  
+    // muestra el más votado
+    const moreVoted = copy.reduce((a,b)=>Math.max(a,b));
+    console.log(`Most voted: ${moreVoted}`)
+    // index of most voted
+    const indexMoreVoted = copy.indexOf(moreVoted);
+    // index anedocte
+    console.log(anecdotes[indexMoreVoted])
+
   }
+
+  const getMostVotedIndex = (points) => {
+    const maxVotes = Math.max(...points);
+    return points.indexOf(maxVotes);
+  };
 
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <p>has {points[selected]} votes</p>
-      <button onClick={handleVote}>Vote</button>
-      <button onClick={handleRandomAnecdote} >Next anecdote</button>
+      <Title text="Anedocte of the Day"/>
+      <Anecdote anecdote={anecdotes[selected]}/>
+      <Votes color='blue' points={points[selected]}/>
+      <Button action={handleVote} text="Vote"   />
+      <Button action={selectRandomAnecdote} text="Next anecdote" />
+      <Title text="Anecdote with most votes" />
+      <Anecdote anecdote={anecdotes[getMostVotedIndex(points)]}/>
+      <Votes color='green' points={points[getMostVotedIndex(points)]} />
+      
     </div>
   )
 }
 
 export default App
-
-
-//https://fullstackopen.com/es/part1/un_estado_mas_complejo_depurando_aplicaciones_react#ejercicios-1-6-1-14
-//1.13*: anecdotes, step 2
